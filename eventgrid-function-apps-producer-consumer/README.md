@@ -46,19 +46,22 @@ To run this sample:
  1. Clone the sample Git repo.
   
 
-    git clone https://github.com/Azure-Samples/event-grid-java-publish-consume-events.git
+        git clone https://github.com/Azure-Samples/event-grid-java-publish-consume-events.git
 
-    cd eventgrid-function-apps-producer-consumer
+        cd eventgrid-function-apps-producer-consumer
 
 
  2. Log in to Azure CLI and create the Azure resources required by this sample.  
 
     
-    az login
+        az login
     
     MacOS/Linux:
+    
         source ./azure_cli_startup.sh
-    Windows
+    
+    Windows:
+    
         TBD...
 
  3. Build and publish the Azure function sample. 
@@ -67,28 +70,34 @@ To run this sample:
     mvn clean package azure-functions:deploy
 
  4. Once the Azure Function App has been published, navigate to the newly published function in the Azure Portal, find the EventGridConsumer entry and click on "Get Function URL" to copy the function URL. Save this URL as it will be used to create the event subscriptions.
-
     
-    MacOS/Linux 
+    MacOS/Linux:
+    
         export EVENTGRID_ENDPOINT="https://egfuncw2olyf3isr.azurewebsites.net/runtime/webhooks/EventGridExtensionConfig?functionName=EventGrid-Consumer&code=code"
-    Windows
+    
+    Windows:
+    
         SET EVENTGRID_ENDPOINT="https://egfuncw2olyf3isr.azurewebsites.net/runtime/webhooks/EventGridExtensionConfig?functionName=EventGrid-Consumer&code=code"
 
  5. Create a new event subscription for a storage account, using default filters.
- 
      
     MacOS/Linux:
+    
         export EVENTGRID_STORAGE_ACCOUNT_ID=$(az storage account show --resource-group $EVENTGRID_RESOURCE_GROUP_NAME --name $EVENTGRID_STORAGE_ACCOUNT_NAME --query id | sed 's/"//g')
-        export EVENTGRID_STORAGE_CONTAINER_ID=$(az storage account show --resource-group $EVENTGRID_RESOURCE_GROUP_NAME --name $EVENTGRID_STORAGE_ACCOUNT_NAME --query id | sed 's/"//g')/$EVENTGRID_STORAGE_CONTAINER_NAME
+        az eventgrid event-subscription create --name egstorage --resource-id $EVENTGRID_STORAGE_ACCOUNT_ID --endpoint-type webhook --endpoint $EVENTGRID_ENDPOINT
+    
     Windows:
+    
         TBD...
    
  6. Create a new event subscription for a custom topic event, using default filters.
-  
       
     MacOS/Linux:
+    
         az eventgrid event-subscription create --name egtopic1 --resource-group $EVENTGRID_RESOURCE_GROUP_NAME --topic-name $EVENTGRID_TOPIC_NAME --endpoint $EVENTGRID_ENDPOINT
+    
     Windows:
+    
         az eventgrid event-subscription create --name egtopic1 --resource-group %EVENTGRID_RESOURCE_GROUP_NAME% --topic-name %EVENTGRID_TOPIC_NAME% --endpoint %EVENTGRID_ENDPOINT%
     
  7. Verify the events are received; in this step, we will be verifying that the events are delivered to your event subscription. Here are the steps:
