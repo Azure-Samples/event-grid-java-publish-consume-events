@@ -21,13 +21,26 @@ import java.util.UUID;
 
 /**
  * Azure Functions with Time Trigger.
- *  - Create and delete storage blobs which will be captured as EventGrid events
+ *  - Publish custom topic events which will be captured as EventGrid events
  */
 public class EventGridTimeTriggeredCustomPublisher {
+
+    /**
+     * This captures the "Data" portion of an EventGridEvent on a custom topic
+     */
+    static class ContosoItemReceivedEventData
+    {
+        public String itemSku;
+
+        public ContosoItemReceivedEventData(String itemSku) {
+            this.itemSku = itemSku;
+        }
+    }
+
     @FunctionName("EventGrid-TimeTriggered-Custom-Publisher")
-    public void EventGridWithCustomPublisher(@TimerTrigger(name = "timerInfo", schedule = "*/20 * * * * *")
-                                                  String timerInfo,
-                                              final ExecutionContext executionContext) {
+    public void EventGridWithCustomPublisher(
+            @TimerTrigger(name = "timerInfo", schedule = "*/20 * * * * *") String timerInfo,
+            final ExecutionContext executionContext) {
 
         try {
             // Create an event grid client.
@@ -35,8 +48,6 @@ public class EventGridTimeTriggeredCustomPublisher {
             EventGridClient client = new EventGridClientImpl(topicCredentials);
 
             // Publish custom events to the EventGrid.
-            //
-
             System.out.println("Publish custom events to the EventGrid");
             List<EventGridEvent> eventsList = new ArrayList<>();
             for (int i = 0; i < 5; i++) {
@@ -55,18 +66,6 @@ public class EventGridTimeTriggeredCustomPublisher {
             client.publishEvents(eventGridEndpoint, eventsList);
         } catch (Exception e) {
             executionContext.getLogger().info("UNEXPECTED Exception caught: " + e.toString());
-        }
-    }
-
-    /**
-     * This captures the "Data" portion of an EventGridEvent on a custom topic
-     */
-    static class ContosoItemReceivedEventData
-    {
-        public String itemSku;
-
-        public ContosoItemReceivedEventData(String itemSku) {
-            this.itemSku = itemSku;
         }
     }
 }

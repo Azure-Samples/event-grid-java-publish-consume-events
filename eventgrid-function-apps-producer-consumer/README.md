@@ -1,5 +1,5 @@
 ---
-services: EventGrid
+services: event-grid
 platforms: java
 author: milismsft
 ---
@@ -43,7 +43,7 @@ To run this sample:
  The following are the steps to run the sample and see events flowing through Event Grid:
 
 
- 1. Clone the sample Git repro.
+ 1. Clone the sample Git repo.
   
 
     git clone https://github.com/Azure-Samples/event-grid-java-publish-consume-events.git
@@ -55,8 +55,11 @@ To run this sample:
 
     
     az login
-
-    source ./azure_cli_startup.sh
+    
+    MacOS/Linux:
+        source ./azure_cli_startup.sh
+    Windows
+        TBD...
 
  3. Build and publish the Azure function sample. 
 
@@ -65,26 +68,38 @@ To run this sample:
 
  4. Once the Azure Function App has been published, navigate to the newly published function in the Azure Portal, find the EventGridConsumer entry and click on "Get Function URL" to copy the function URL. Save this URL as it will be used to create the event subscriptions.
 
-     
-    export EVENTGRID_ENDPOINT="https://egfuncw2olyf3isr.azurewebsites.net/runtime/webhooks/EventGridExtensionConfig?functionName=EventGrid-Consumer&code=code"
+    
+    MacOS/Linux 
+        export EVENTGRID_ENDPOINT="https://egfuncw2olyf3isr.azurewebsites.net/runtime/webhooks/EventGridExtensionConfig?functionName=EventGrid-Consumer&code=code"
+    Windows
+        SET EVENTGRID_ENDPOINT="https://egfuncw2olyf3isr.azurewebsites.net/runtime/webhooks/EventGridExtensionConfig?functionName=EventGrid-Consumer&code=code"
 
  5. Create a new event subscription for a storage account, using default filters.
  
      
-    export EVENTGRID_STORAGE_ACCOUNT_ID=$(az storage account show --resource-group $EVENTGRID_RESOURCE_GROUP_NAME --name $EVENTGRID_STORAGE_ACCOUNT_NAME --query id | sed 's/"//g')
-    export EVENTGRID_STORAGE_CONTAINER_ID=$(az storage account show --resource-group $EVENTGRID_RESOURCE_GROUP_NAME --name $EVENTGRID_STORAGE_ACCOUNT_NAME --query id | sed 's/"//g')/$EVENTGRID_STORAGE_CONTAINER_NAME
-    
+    MacOS/Linux:
+        export EVENTGRID_STORAGE_ACCOUNT_ID=$(az storage account show --resource-group $EVENTGRID_RESOURCE_GROUP_NAME --name $EVENTGRID_STORAGE_ACCOUNT_NAME --query id | sed 's/"//g')
+        export EVENTGRID_STORAGE_CONTAINER_ID=$(az storage account show --resource-group $EVENTGRID_RESOURCE_GROUP_NAME --name $EVENTGRID_STORAGE_ACCOUNT_NAME --query id | sed 's/"//g')/$EVENTGRID_STORAGE_CONTAINER_NAME
+    Windows:
+        TBD...
    
  6. Create a new event subscription for a custom topic event, using default filters.
   
       
-     az eventgrid event-subscription create --name egtopic1 --resource-group $EVENTGRID_RESOURCE_GROUP_NAME --topic-name $EVENTGRID_TOPIC_NAME --endpoint $EVENTGRID_ENDPOINT
+    MacOS/Linux:
+        az eventgrid event-subscription create --name egtopic1 --resource-group $EVENTGRID_RESOURCE_GROUP_NAME --topic-name $EVENTGRID_TOPIC_NAME --endpoint $EVENTGRID_ENDPOINT
+    Windows:
+        az eventgrid event-subscription create --name egtopic1 --resource-group %EVENTGRID_RESOURCE_GROUP_NAME% --topic-name %EVENTGRID_TOPIC_NAME% --endpoint %EVENTGRID_ENDPOINT%
     
  7. Verify the events are received; in this step, we will be verifying that the events are delivered to your event subscription. Here are the steps:
 
-    a. Log in to the Azure Portal, navigate to the newly created function and find the EventGridConsumer entry.
+    a. Log in to the Azure Portal and navigate to the newly created resource group (see the terminal/command prompt environment)
+    
+    b. Navigate to the newly created function and find the EventGrid-TimeTriggered-Custom-Publisher entry. This is a time triggered function which will publish custom topic events; inspect the logging and confirm that events are generated/published.
+    
+    c. Navigate to the newly created function and find theEventGrid-TimeTriggered-Storage-Publisher entry. This is a time triggered function which will generate blob storage events by creating and deleting temporary blobs; inspect the logging and confirm that events are generated/published.
 
-    b. In the Logs view of the EventGridConsumer entry for the Azure Function, verify that you can see the logs that show the receipt of the EventGridEvent.
+    d. Navigate to the newly created function and find the EventGrid-Consumer entry. In the Logs view of the EventGrid-Consumer entry for the Azure Function, verify that you can see the logs that show the receipt of the EventGridEvent.
  
  
 ## Resources

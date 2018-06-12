@@ -19,38 +19,7 @@ import com.microsoft.azure.serverless.functions.annotation.FunctionName;
  */
 public class EventGridConsumer {
     /**
-     */
-    @FunctionName("EventGrid-Consumer")
-    public void Run(@EventGridTrigger(name = "data") String data, final ExecutionContext executionContext) {
-        executionContext.getLogger().info("Java EventGrid trigger function begun\n");
-        executionContext.getLogger().info("\tFOUND: " + data);
-
-        try {
-            final String SubscriptionValidationEvent = "Microsoft.EventGrid.SubscriptionValidationEvent";
-            final String StorageBlobCreatedEvent = "Microsoft.Storage.BlobCreated";
-            final String CustomTopicEvent = "Contoso.Items.ItemReceived";
-            final Gson gson = new GsonBuilder().create();
-
-            EventGridEvent eventGridEvent = gson.fromJson(data, EventGridEvent.class);
-
-            // Deserialize the event data into the appropriate type based on event type
-            if (eventGridEvent.eventType().toLowerCase().equals(StorageBlobCreatedEvent.toLowerCase())) {
-                // Deserialize the data portion of the event into StorageBlobCreatedEventData
-                StorageBlobCreatedEventData eventData = (StorageBlobCreatedEventData) eventGridEvent.data();
-                executionContext.getLogger().info("Got BlobCreated event data, blob URI " + eventData.url());
-            }
-            else if (eventGridEvent.eventType().toLowerCase().equals(CustomTopicEvent.toLowerCase())) {
-                // Deserialize the data portion of the event into ContosoItemReceivedEventData
-                ContosoItemReceivedEventData eventData = (ContosoItemReceivedEventData) eventGridEvent.data();
-                executionContext.getLogger().info("Got ContosoItemReceived event data, item SKU " + eventData.itemSku);
-            }
-        } catch (Exception e) {
-            executionContext.getLogger().info("UNEXPECTED Exception caught: " + e.toString());
-        }
-    }
-
-    /**
-     * This captures the "Data" portion of an EventGridEvent on a custom topic
+     * This captures the "Data" portion of an EventGridEvent on a custom topic.
      */
     static class ContosoItemReceivedEventData
     {
@@ -60,4 +29,36 @@ public class EventGridConsumer {
             this.itemSku = itemSku;
         }
     }
+
+    /**
+     * EventGrid trigger function for handling the events and log them to the execution context.
+     */
+    @FunctionName("EventGrid-Consumer")
+    public void Run(@EventGridTrigger(name = "data") String data, final ExecutionContext executionContext) {
+        executionContext.getLogger().info("Java EventGrid trigger function begun\n");
+        executionContext.getLogger().info("\tFOUND: " + data);
+
+        try {
+            final String StorageBlobCreatedEvent = "Microsoft.Storage.BlobCreated";
+            final String CustomTopicEvent = "Contoso.Items.ItemReceived";
+            final Gson gson = new GsonBuilder().create();
+
+            EventGridEvent eventGridEvent = gson.fromJson(data, EventGridEvent.class);
+
+            // Deserialize the event data into the appropriate type based on event type
+            if (eventGridEvent.eventType().toLowerCase().equals(StorageBlobCreatedEvent.toLowerCase())) {
+                // Deserialize the data portion of the event into StorageBlobCreatedEventData
+                StorageBlobCreatedEventData eventData = gson.fromJson((String) eventGridEvent.data(), StorageBlobCreatedEventData.class);
+                executionContext.getLogger().info("Got BlobCreated event data, blob URI " + eventData.url());
+            }
+            else if (eventGridEvent.eventType().toLowerCase().equals(CustomTopicEvent.toLowerCase())) {
+                // Deserialize the data portion of the event into ContosoItemReceivedEventData
+                ContosoItemReceivedEventData eventData = gson.fromJson((String) eventGridEvent.data(), ContosoItemReceivedEventData.class);
+                executionContext.getLogger().info("Got ContosoItemReceived event data, item SKU " + eventData.itemSku);
+            }
+        } catch (Exception e) {
+            executionContext.getLogger().info("UNEXPECTED Exception caught: " + e.toString());
+        }
+    }
+
 }
