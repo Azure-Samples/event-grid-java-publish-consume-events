@@ -1,57 +1,50 @@
-# Project Name
+---
+services: event-grid
+platforms: Java
+author:milismsft
+---
 
-(short, 1-3 sentenced, description of the project)
+
+# Microsoft Azure Event Grid Publish/Consume Samples for Java
+
+This contains Java samples for publishing events to Azure Event Grid and consuming events from Azure Event Grid. It also contains a set of management samples that demonstrates how to manage topics and event subscriptions using Java code.
 
 ## Features
 
-This project framework provides the following features:
+These samples demonstrates the following features:
 
-* Feature 1
-* Feature 2
-* ...
+* How to create a topic and an event subscription to a topic using Java and Azure CLI.
+* How to create an event subscription to a blob storage using Azure CLI.
+* How to create an event hub using Java.
+* How to publish events to Azure Event Grid using Java and Azure Functions.
+* How to consume events delivered by Azure Event Grid using an Azure Function and through an Azure Event Hub event processor.
+
 
 ## Getting Started
 
 ### Prerequisites
 
-(ideally very short, if any)
-
-- OS
-- Library version
-- ...
-
-### Installation
-
-(ideally very short)
-
-- npm install [package name]
-- mvn install
-- ...
-
-### Quickstart
-(Add steps to get up and running quickly)
-
-1. git clone [repository clone url]
-2. cd [respository name]
-3. ...
+- Azure CLI for provisioning the Azure resources such as resource group, storage account, EventGrid topic, EventSubscription
+- Azure Functions Core Tools (https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local)
 
 
-## Demo
+## Running this Sample ##
 
-A demo app is included to show how to use the project.
-
-To run the demo, follow these steps:
-
-(Add steps to start up the demo)
-
-1.
-2.
-3.
+To run these samples clone the repo, go to the respective sample directory and follow the README.md steps for each particular sample.
 
 ## Resources
 
 (Any additional resources or related projects)
 
-- Link to supporting information
-- Link to similar sample
-- ...
+- https://docs.microsoft.com/en-us/azure/event-grid/overview
+- https://docs.microsoft.com/en-us/azure/azure-functions/functions-develop-vs
+
+## More information ##
+
+[http://azure.com/java](http://azure.com/java)
+
+If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](http://go.microsoft.com/fwlink/?LinkId=330212)
+
+---
+
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
