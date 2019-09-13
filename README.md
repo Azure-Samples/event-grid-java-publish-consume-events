@@ -1,9 +1,12 @@
 ---
-services: event-grid
-platforms: Java
-author:milismsft
+page_type: sample
+languages:
+- java
+products:
+- azure
+description: "This contains Java samples for publishing events to Azure Event Grid and consuming events from Azure Event Grid."
+urlFragment: event-grid-java-publish-consume-events
 ---
-
 
 # Microsoft Azure Event Grid Publish/Consume Samples for Java
 
