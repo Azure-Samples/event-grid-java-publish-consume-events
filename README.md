@@ -4,8 +4,8 @@ languages:
 - java
 products:
 - azure
-description: "This contains Java samples for publishing events to Azure Event Grid and consuming events from Azure Event Grid."
-urlFragment: event-grid-java-publish-consume-events
+description: "Java samples for publishing and consuming events from Azure Event Grid."
+urlFragment: microsoft-azure-event-grid-java-sample
 ---
 
 # Microsoft Azure Event Grid Publish/Consume Samples for Java
