@@ -8,6 +8,8 @@ description: "Java samples for publishing and consuming events from Azure Event 
 urlFragment: microsoft-azure-event-grid-java-sample
 ---
 
+***DISCLAIMER: The data-plane samples in this repo are for azure-eventgrid v1 (1.x). For the samples for v4 (4.x and above) please visit [here](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-messaging-eventgrid/src/samples/java). This repo is archived since v4 has become stable. The management-plane samples in this repo uses a beta version of the client library. A stable version of [Event Grid management library](https://mvnrepository.com/artifact/com.azure.resourcemanager/azure-resourcemanager-eventgrid/1.0.0) is now available and to view the samples, please visit [here](https://github.com/azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-resourcemanager-eventgrid/src/samples).***
+
 # Microsoft Azure Event Grid Publish/Consume Samples for Java
 
 This contains Java samples for publishing events to Azure Event Grid and consuming events from Azure Event Grid. It also contains a set of management samples that demonstrates how to manage topics and event subscriptions using Java code.
